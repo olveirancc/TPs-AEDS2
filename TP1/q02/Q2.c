@@ -25,15 +25,12 @@ int Fim(char entrada[])
 int main(void)
 {
     char entrada[500];
-    scanf("%[^\n]%*c", entrada);
+    scanf("%[^\r\n]", entrada);
     while (Fim(entrada))
     {
-        if (Palindromo(entrada))
-        {
-            printf("SIM\n");
-        }
+        if (Palindromo(entrada)) printf("SIM\n");
         else printf("NAO\n");
-        scanf("%[^\n]%*c", entrada);
+        scanf(" %[^\r\n]", entrada);
     }
     return 0;
 }
