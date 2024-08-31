@@ -1,30 +1,41 @@
-
-import java.util.Scanner;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Q12 {
-    public static boolean Fim(String s) {
-        return (s.length() >= 3 && s.charAt(0) == 'F' && s.charAt(1) == 'I' && s.charAt(2) == 'M');
-    }
-
-    public static void Cifra(String s, Scanner scanner) {
-        if (!(Fim(s))) {
-            StringBuilder sb = new StringBuilder();
-            int chave = 3;
-            for (int i = 0; i < s.length(); i++) {
-                char c = s.charAt(i);
-                char cifrado = (char) (c + chave);
-                sb.append(cifrado);
+    public static String ceaserCypher(String palavra, int index) {
+        if (index == palavra.length()) {
+            return "";
+        } else {
+            char c = palavra.charAt(index);
+            if (c != 65533) {
+                return (char) (c + 3) + ceaserCypher(palavra, index + 1);
+            } else {
+                return "\uFFFD" + ceaserCypher(palavra, index + 1);
             }
-            System.out.println(sb.toString());
-            s = scanner.nextLine();
-            Cifra(s, scanner);
         }
     }
 
+    public static void readInput(InputStreamReader reader, StringBuilder buffer) throws IOException {
+        int ch = reader.read();
+        if (ch == -1 || (buffer.length() > 2 && buffer.charAt(0) == 'F' && buffer.charAt(1) == 'I' && buffer.charAt(2) == 'M')) {
+            return;
+        }
+        if (ch == '\n') {
+            String newWord = ceaserCypher(buffer.toString(), 0);
+            System.out.println(newWord);
+            buffer.setLength(0);
+        } else {
+            buffer.append((char) ch);
+        }
+        readInput(reader, buffer);
+    }
+
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        String entrada = scanner.nextLine();
-        Cifra(entrada, scanner);
-        scanner.close();
+        try {
+            InputStreamReader reader = new InputStreamReader(System.in, "UTF-8");
+            readInput(reader, new StringBuilder());
+        } catch (IOException e) {
+            
+        }
     }
 }

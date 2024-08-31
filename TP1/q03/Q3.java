@@ -1,29 +1,36 @@
+import java.io.IOException;
+import java.io.InputStreamReader;
 
-import java.util.Scanner;
-
-public class Q3 {
-    public static boolean Fim(String s) {
-        return (s.length() >= 3 && s.charAt(0) == 'F' && s.charAt(1) == 'I' && s.charAt(2) == 'M');
-    }
-
-    public static void Cifra(String s) {
-        StringBuilder sb = new StringBuilder();
-        int chave = 3;
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            char cifrado = (char) (c + chave);
-            sb.append(cifrado);
+public class Q3{
+	public static String ceaserCypher(String palavra){
+		int key = 3;
+		StringBuilder newWord = new StringBuilder();
+		for(int i = 0; i < palavra.length(); i++){
+			if(palavra.charAt(i) != 65533)
+				newWord.append((char)(palavra.charAt(i)+key));
+			else
+				newWord.append("\uFFFD");
+		}
+		return newWord.toString();
+	}
+    public static void main(String[] args){
+        try {
+            InputStreamReader reader = new InputStreamReader(System.in, "UTF-8");
+            StringBuilder buffer = new StringBuilder();
+            int ch;
+            while((ch = reader.read()) != -1){
+				if (buffer.length() > 2 && buffer.charAt(0) == 'F' && buffer.charAt(1) == 'I' && buffer.charAt(2) == 'M')
+					break;
+                if (ch == '\n') {
+                    String newWord = ceaserCypher(buffer.toString());
+                    System.out.println(newWord);
+                    buffer.setLength(0);
+                } else {
+                    buffer.append((char)ch);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        System.out.println(sb.toString());
-    }
-
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        String entrada = scanner.nextLine();
-        while (!(Fim(entrada))) {
-            Cifra(entrada);
-            entrada = scanner.nextLine();
-        }
-        scanner.close();
     }
 }
